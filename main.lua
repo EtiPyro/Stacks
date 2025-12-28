@@ -1,14 +1,21 @@
+--! file: main.lua
+print(require("foo"))
+tick = require "tick"
+Object = require "classic"
+
+table_of_objects = {}
+cursor_x = 0
+cursor_y = 0
+confirm_shape = 0;
+shapes = {"square","circle", "other"}
+shape_cycle = 0
+
 -- Load some default values for our rectangle.
 function love.load()
     world = love.physics.newWorld( 1, 1, true)
-    table_of_objects = {}
-    shapes = {"square","circle", "other"}
-    shape_cycle = 0
     x, y, w, h = 20, 20, 60, 20
     meme = love.graphics.newImage("meme.jpg")
-    cursor_x = 0
-    cursor_y = 0
-    confirm_shape = 0;
+    
 end
 
 
@@ -83,4 +90,8 @@ function create_object(obj_x, obj_y, shape)
   end
   new_object.fixture = love.physics.newFixture(new_object.body, new_object.shape);
   return new_object
+end
+
+function restartGame()
+
 end
