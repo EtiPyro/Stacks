@@ -1,17 +1,22 @@
 --! file: main.lua
 print(require("foo"))
 tick = require "tick"
-Object = require "classic"
-
+lume = require("lume")
+local Rectangle = require "rectangle"
+local Circle = require "circle"
+local r1, r2
 table_of_objects = {}
 cursor_x = 0
 cursor_y = 0
 confirm_shape = 0;
 shapes = {"square","circle", "other"}
 shape_cycle = 0
+io.stdout:setvbuf("no")
 
 -- Load some default values for our rectangle.
 function love.load()
+    r1 = Rectangle(100, 100, 200, 50)
+    r2 = Circle(350, 80, 40)
     world = love.physics.newWorld( 1, 1, true)
     x, y, w, h = 20, 20, 60, 20
     meme = love.graphics.newImage("meme.jpg")
@@ -22,8 +27,11 @@ end
 
 -- Increase the size of the rectangle every frame.
 function love.update(dt)
+  --print(dt)
     w = w + 1
     h = h + 0.1
+    r1:update(dt)
+    r2:update(dt)
 end
 
 -- Draw a coloured rectangle.
@@ -56,6 +64,8 @@ function love.draw()
         love.graphics.line(points)
       end
     end
+    r1:draw()
+    r2:draw()
 end
 
 
@@ -65,9 +75,15 @@ function love.mousepressed(cursor_x, cursor_y, button, istouch)
       local new_object = create_object(cursor_x,cursor_y, shapes[shape_cycle+1])
       new_object.placed = false
       table_of_objects[#table_of_objects+1] = new_object
-  else
-    
   end
+end
+
+function love.keypressed(key, scancode, isrepeat)
+   if key == "escape" then
+      love.event.quit()
+   elseif key=="f1" then
+      love.event.quit("restart")
+   end
 end
 
 function love.mousereleased(cursor_x, cursor_y, button, istouch)
@@ -90,8 +106,4 @@ function create_object(obj_x, obj_y, shape)
   end
   new_object.fixture = love.physics.newFixture(new_object.body, new_object.shape);
   return new_object
-end
-
-function restartGame()
-
 end

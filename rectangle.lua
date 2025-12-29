@@ -1,8 +1,15 @@
 --! file: rectangle.lua
+local Shape = require "shape"
+local Rectangle = Shape:extend()
 
--- Pass Object as first argument.
-Rectangle = Object.extend(Object)
-
-function Rectangle.new(self)
-    self.test = math.random(1, 1000)
+function Rectangle:new(x, y, width, height)
+    Rectangle.super.new(self, x, y)
+    self.width = width
+    self.height = height
 end
+
+function Rectangle:draw()
+    love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
+end
+
+return Rectangle
